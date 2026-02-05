@@ -1,7 +1,10 @@
 package br.com.wellcare.wellcare_api.api.controller;
 
 import br.com.wellcare.wellcare_api.api.domain.entity.Usuario;
+import br.com.wellcare.wellcare_api.api.dto.UsuarioCreateDTO;
+import br.com.wellcare.wellcare_api.api.dto.UsuarioResponseDTO;
 import br.com.wellcare.wellcare_api.api.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +29,8 @@ public class UsuarioController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Usuario cadastrar(@RequestBody Usuario usuario){
-        return service.cadastrar(usuario);
+    public UsuarioResponseDTO cadastrar(@RequestBody @Valid UsuarioCreateDTO dto){
+        return service.cadastrar(dto);
     }
 
     /**
