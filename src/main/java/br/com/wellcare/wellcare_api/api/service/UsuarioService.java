@@ -29,6 +29,8 @@ public class UsuarioService {
             throw new IllegalArgumentException("E-mail já cadastrado!");
         });
 
+        usuario.setAtivo(true);
+
         return usuarioRepository.save(usuario);
     }
 
