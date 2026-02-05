@@ -7,6 +7,7 @@ import br.com.wellcare.wellcare_api.api.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Camada de serviço responsável pelas regras de negócio
@@ -45,8 +46,11 @@ public class UsuarioService {
     /**
      * Retorna todos os usuários cadastrados.
      */
-    public List<Usuario> listarUsuarios(){
-        return  usuarioRepository.findAll();
+    public List<UsuarioResponseDTO> listarUsuarios(){
+        return  usuarioRepository.findAll()
+                .stream()
+                .map(this::toResponseDTO)
+                .collect(Collectors.toList());
     }
 
     /**
