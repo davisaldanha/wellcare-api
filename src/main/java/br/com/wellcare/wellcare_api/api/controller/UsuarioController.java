@@ -33,6 +33,7 @@ public class UsuarioController {
     /**
      * Endpoint para listagem de usuários.
      */
+    @GetMapping
     public List<Usuario> listar(){
         return service.listarUsuarios();
     }
