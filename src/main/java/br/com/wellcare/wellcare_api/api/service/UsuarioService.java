@@ -1,6 +1,8 @@
 package br.com.wellcare.wellcare_api.api.service;
 
 import br.com.wellcare.wellcare_api.api.domain.entity.Usuario;
+import br.com.wellcare.wellcare_api.api.dto.UsuarioCreateDTO;
+import br.com.wellcare.wellcare_api.api.dto.UsuarioResponseDTO;
 import br.com.wellcare.wellcare_api.api.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,14 +26,20 @@ public class UsuarioService {
      * Cadastra um novo usuário no sistema.
      * Não permite emails duplicados.
      */
-    public Usuario cadastrar(Usuario usuario){
-        usuarioRepository.findByEmail(usuario.getEmail()).ifPresent(u -> {
+    public UsuarioResponseDTO cadastrar(UsuarioCreateDTO dto){
+        usuarioRepository.findByEmail(dto.getEmail()).ifPresent(u -> {
             throw new IllegalArgumentException("E-mail já cadastrado!");
         });
 
+        Usuario usuario = new Usuario();
+        usuario.setNome(dto.getNome());
+        usuario.setEmail(dto.getEmail());
+        usuario.setDataNascimento(dto.getDataNascimento());
         usuario.setAtivo(true);
 
-        return usuarioRepository.save(usuario);
+        Usuario usuarioSalvo = usuarioRepository.save(usuario);
+
+        return toResponseDTO(usuarioSalvo);
     }
 
     /**
@@ -39,5 +47,16 @@ public class UsuarioService {
      */
     public List<Usuario> listarUsuarios(){
         return  usuarioRepository.findAll();
+    }
+
+    /**
+     * Retorna o objeto UsuarioResponseDTO.
+     */
+    private UsuarioResponseDTO toResponseDTO(Usuario usuario){
+        UsuarioResponseDTO dto = new UsuarioResponseDTO();
+        dto.setId(usuario.getId());
+        dto.setNome(usuario.getNome());
+        dto.setEmail(usuario.getEmail());
+        return dto;
     }
 }
