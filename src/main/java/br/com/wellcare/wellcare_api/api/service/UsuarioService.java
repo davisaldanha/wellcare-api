@@ -4,6 +4,7 @@ import br.com.wellcare.wellcare_api.api.domain.entity.Usuario;
 import br.com.wellcare.wellcare_api.api.dto.UsuarioCreateDTO;
 import br.com.wellcare.wellcare_api.api.dto.UsuarioResponseDTO;
 import br.com.wellcare.wellcare_api.api.repository.UsuarioRepository;
+import br.com.wellcare.wellcare_api.api.service.exception.EmailJaCadastradoException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class UsuarioService {
      */
     public UsuarioResponseDTO cadastrar(UsuarioCreateDTO dto){
         usuarioRepository.findByEmail(dto.getEmail()).ifPresent(u -> {
-            throw new IllegalArgumentException("E-mail já cadastrado!");
+            throw new EmailJaCadastradoException("Já existe um usuário cadastrado com o email informado.");
         });
 
         Usuario usuario = new Usuario();
